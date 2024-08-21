@@ -62,7 +62,7 @@ export function Post({ post }: PostProps) {
         mutationFn: api.posts.remove,
         onSuccess: response => {
             queryClient
-                .invalidateQueries({ queryKey: ['my-posts', 'posts'] })
+                .invalidateQueries({ queryKey: ['user-posts', 'posts'] })
                 .then(() => {
                     toast({
                         description: response.message,

@@ -5,6 +5,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useQuery } from '@tanstack/react-query'
 import { AlertCircle, ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
+import { CommentForm } from './comment-form'
+import { CommentsList } from './comments-list'
 
 export default function PostPage({ params }: { params: { id: string } }) {
     const id = Number(params.id)
@@ -49,6 +51,11 @@ export default function PostPage({ params }: { params: { id: string } }) {
                         {post.content}
                     </p>
                 </article>
+            </section>
+            <section className="mt-8">
+                <CommentForm postId={post.id} />
+                <h2 className="mt-8 text-xl">Comentários</h2>
+                <CommentsList post={post} className="mt-6" />
             </section>
         </>
     )
