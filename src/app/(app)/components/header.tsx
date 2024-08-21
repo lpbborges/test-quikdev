@@ -35,13 +35,12 @@ export function Header() {
                 <span className="hidden lg:block text-xl">ACME inc.</span>
             </Link>
             <div className="flex items-center gap-6">
-                <Link
-                    href="/posts/new"
-                    className="flex items-center gap-2 hover:opacity-50 dark:hover:brightness-50"
-                >
-                    <SquarePen className="h-5 w-5" />
-                    Publicar
-                </Link>
+                <Button asChild variant="ghost">
+                    <Link href="/posts/new" className="flex items-center gap-2">
+                        <SquarePen className="h-5 w-5" />
+                        Publicar
+                    </Link>
+                </Button>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button

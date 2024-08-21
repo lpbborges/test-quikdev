@@ -1,6 +1,7 @@
 'use client'
 
 import { api } from '@/app/http'
+import type { Post } from '@/app/http/types'
 import { Button } from '@/components/ui/button'
 import {
     Form,
@@ -21,20 +22,27 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+interface EditPostFormProps {
+    post: Post
+}
+
 const formSchema = z.object({
+    postId: z.number(),
     title: z.string().min(1, 'Título não informado.'),
     content: z.string().min(1, 'Conteúdo não informado.'),
 })
 
-export function CreatePostForm() {
+export function EditPostForm({ post }: EditPostFormProps) {
     const { toast } = useToast()
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
-        mutationFn: api.posts.create,
+        mutationFn: api.posts.update,
         onSuccess: response => {
             queryClient
-                .invalidateQueries({ queryKey: ['user-posts', 'posts'] })
+                .invalidateQueries({
+                    queryKey: ['user-posts', 'posts'],
+                })
                 .then(() => {
                     toast({
                         description: response.message,
@@ -51,13 +59,17 @@ export function CreatePostForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: '',
-            content: '',
+            postId: post.id,
+            title: post.title,
+            content: post.content,
         },
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        mutation.mutate(values)
+        mutation.mutate({
+            post_id: values.postId,
+            post: { ...values },
+        })
     }
 
     return (
@@ -70,24 +82,30 @@ export function CreatePostForm() {
                         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center w-full">
                             <div>
                                 <h2 className="text-lg font-medium text-foreground">
-                                    Novo post
+                                    Editando
                                 </h2>
-                                <p className="text-sm text-foreground">
-                                    Publique suas ideias
-                                </p>
                             </div>
                             <div className="hidden items-center gap-2 lg:flex">
                                 <Button variant="outline" type="button" asChild>
                                     <Link href="/">Voltar</Link>
                                 </Button>
-                                <Button type="submit" className="gap-2 ">
+                                <Button type="submit" className="gap-2">
                                     {mutation.isPending && (
                                         <Loader2 className="w-4 h-4 animate-spin" />
                                     )}
-                                    Publicar
+                                    Salvar
                                 </Button>
                             </div>
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="postId"
+                            render={({ field }) => (
+                                <FormControl>
+                                    <Input type="hidden" {...field} />
+                                </FormControl>
+                            )}
+                        />
                         <Separator className="my-4" />
                         <FormField
                             control={form.control}
@@ -115,7 +133,7 @@ export function CreatePostForm() {
                                     <FormLabel>Conteúdo</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Conte-nos o que está na sua mente..."
+                                            placeholder="Conte-nos o que está na sua mente"
                                             className="resize-none"
                                             autoCapitalize="none"
                                             autoCorrect="off"

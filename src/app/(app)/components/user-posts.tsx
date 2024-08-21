@@ -4,6 +4,7 @@ import { api } from '@/app/http'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useQuery } from '@tanstack/react-query'
 import { AlertCircle } from 'lucide-react'
+import Loading from '../loading'
 import { Posts } from './posts'
 
 interface UserPosts {
@@ -11,10 +12,14 @@ interface UserPosts {
 }
 
 export function UserPosts({ userId }: UserPosts) {
-    const { data, isError } = useQuery({
+    const { data, isError, isPending } = useQuery({
         queryKey: ['user-posts', userId],
         queryFn: api.posts.getAllByUser,
     })
+
+    if (isPending) {
+        return <Loading />
+    }
 
     if (isError) {
         return (
