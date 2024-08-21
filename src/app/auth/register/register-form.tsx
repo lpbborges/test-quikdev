@@ -43,7 +43,7 @@ type FormData = z.infer<typeof formSchema>
 
 export function RegisterForm() {
     const { toast } = useToast()
-    const { back, push } = useRouter()
+    const { push } = useRouter()
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -65,6 +65,7 @@ export function RegisterForm() {
             toast({ description: response.message })
             push('/auth/login')
         } catch (err: any) {
+            console.error('Failed to register:', err)
             toast({
                 variant: 'destructive',
                 description: err.message,

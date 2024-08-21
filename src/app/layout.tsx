@@ -1,11 +1,10 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
 import { fontSans } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import Providers from './providers'
 
 export const metadata: Metadata = {
     title: {
@@ -33,9 +32,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <div className="relative flex min-h-screen flex-col bg-background">
-                        {children}
-                    </div>
+                    <Providers>
+                        <div className="relative flex min-h-screen flex-col bg-background">
+                            {children}
+                        </div>
+                    </Providers>
+                    <Toaster />
                 </ThemeProvider>
             </body>
         </html>
