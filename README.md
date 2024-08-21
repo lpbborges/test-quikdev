@@ -25,3 +25,7 @@ Optei pelo Tailwind CSS pois é uma tecnologia que podemos tirar uma boa produti
 ### [Shadcn UI](https://ui.shadcn.com/)
 
 O Shadcn entrega uma UI pronta para o desenvolvimento do projeto, de fácil customização, além de que não traz todos os componentes em sua instalação deixando que o desenvolvedor escolha quais estarão no projeto.
+
+### [React Query](https://tanstack.com/query/latest/docs/framework/react/overview)
+
+React Query fornece uma maneira fácil de gerenciar estados de requisições HTTP, entrega uma boa experiência para o usuário porque é fácil de gerenciar seu cache.
